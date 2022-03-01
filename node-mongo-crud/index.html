@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>look bro, this is mongo db!!!</h1>
+    <hr />
+    <form action="/addProducts" method="post">
+      <input type="text" placeholder="name" name="name" />
+      <input type="text" placeholder="price" name="price" />
+      <input type="text" placeholder="quantity" name="quantity" />
+      <button>submit</button>
+    </form>
+    <div id="data"></div>
+    <div id="update"></div>
+
+    <script>
+      fetch("/products")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          data.forEach((pd) => {
+            const data = document.getElementById("data");
+            let p = document.createElement("p");
+            p.innerHTML = `${pd.name}
+              <button onclick="handleUpdate('${pd._id}')">Update</button>
+              <button onclick="handleDelete('${pd._id}')">delete</button>
+            `;
+            data.appendChild(p);
+          });
+        });
+
+      function handleUpdate(id) {
+        fetch(`/singleProduct/${id}`)
+          .then((res) => res.json())
+          .then((data) => {
+            const updateField = document.getElementById("update");
+            updateField.innerHTML = `
+            <h1>update: ${data._id}</h1>
+            price: <input type='text' value='${data.price}' id='price'>
+            </br>
+            quantity: <input type='text' value='${data.quantity}' id='quantity'>
+            </br>
+            <button onclick="handleSubmit('${data._id}')">submit</button>
+            `;
+          });
+      }
+      function handleSubmit(id) {
+        const price = document.getElementById("price").value;
+        const quantity = document.getElementById("quantity").value;
+        const product = { id, price, quantity };
+        fetch(`/update/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(product),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("data");
+          });
+      }
+      function handleDelete(id) {
+        fetch(`/deleteItem/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => console.log("success"));
+      }
+    </script>
+  </body>
+</html>
