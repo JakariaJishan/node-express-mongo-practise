@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>this is form</h1>
+    <form action="/quotes" method="POST">
+      <input type="text" placeholder="name" name="name" />
+      <input type="text" placeholder="quote" name="quote" />
+      <button type="submit">Submit</button>
+    </form>
+    <div id="quoteData"></div>
+    <div id="updateQuote"></div>
+    <script>
+      fetch("/x")
+        .then((res) => res.json())
+        .then((data) => {
+          data.map((elem) => {
+            const quoteData = document.getElementById("quoteData");
+            const p = document.createElement("p");
+            p.innerHTML = `${elem.name}
+              <button onclick="handleUpdate('${elem._id}')">update</button>
+              <button onclick="handleDelete('${elem._id}')">delete</button>
+            `;
+            quoteData.appendChild(p);
+          });
+        });
+
+      const handleUpdate = (id) => {
+        fetch(`/update/${id}`)
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data[0]);
+            const updateQuote = document.getElementById("updateQuote");
+            updateQuote.innerHTML = `id:::${data[0]._id}
+            <hr/>
+            <input type="text" placeholder="${data[0].name}" name="name" id='name' />
+            <input type="text" placeholder="${data[0].quote}" name="quote" id='quote' />
+            <button type="submit" onclick="handleUpdateSubmit('${data[0]._id}')">Submit</button>
+            `;
+          });
+      };
+
+      const handleUpdateSubmit = (id) => {
+        const name = document.getElementById("name").value;
+        const quote = document.getElementById("quote").value;
+        let obj = { name, quote, id };
+        fetch(`/updateItem/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(obj),
+        })
+          .then((res) => res.json())
+          .then((result) => {
+            console.log(result);
+          });
+      };
+
+      const handleDelete = (id) => {
+        console.log(id);
+        fetch(`/delete/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((result) => {
+            console.log(result);
+          });
+      };
+    </script>
+  </body>
+</html>
