@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <header>
+      <a href="/">home</a>
+      <a href="/user">user</a>
+    </header>
+
+    user: <% if (user.length > 0) { %>
+    <main>
+      <h1>
+        <% for(let i=0; i < user.length; i++) { %> <%= user[i].user %> <% } %>
+      </h1>
+    </main>
+    <% } else { %>
+    <h1>no user found</h1>
+    <% } %>
+  </body>
+</html>
