@@ -3,26 +3,19 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
-const bodyParser = require("body-parser")
+const bodyParser = require("body-parser");
+const { getUser, addUser, userHome } = require("./controller/user.controller");
+const userRoute = require("./routes/router");
 app.use(bodyParser.urlencoded({ extended: false }))
 
 
-const user=[];
 
 app.set('view engine', 'ejs');
 
-app.get('/', (req, res) => {
-    res.render('index', {title: 'home'})
-})
+app.use('/', userRoute)
+// app.use('/user', userRoute)
+// app.use('/add', userRoute)
 
-app.get('/user', (req, res) => {
-    
-    res.render('user', {title: 'user', user})
-})
 
-app.post('/add-user', (req, res) => {
-    user.push({user: req.body.username})
-    res.redirect('/user')
-})
 
 app.listen(port);
