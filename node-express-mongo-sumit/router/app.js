@@ -1,9 +1,8 @@
 const express = require("express");
+const adminRouter = require("./routers/adminRouter");
 
 const app = express();
 
-app.get("/about", (req, res) => {
-  res.send("hello world");
-});
+app.use("/admin", adminRouter);
 
 app.listen(3000);
