@@ -3,9 +3,10 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const todoSchema = require("../schemas/todoSchema");
 const Todo = new mongoose.model("Todo", todoSchema);
+const checkLogIn = require("../middlewares/checkLogIn")
 
 //can use .select for hide selected value, .limit for limit, .exec for execution ,,,these are called method chaining.
-router.get("/", async (req, res) => {
+router.get("/", checkLogIn, async (req, res) => {
   await Todo.find({
     /* filter kora jay --status: "inactive" */
   })
