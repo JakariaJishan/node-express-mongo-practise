@@ -18,9 +18,27 @@ router.post("/signup", async (req, res) => {
       message: "sign up successfull",
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({
       error: "signup failed",
+    });
+  }
+});
+
+router.post("/login", async (req, res) => {
+  const user = await User.find({ user: req.body.user });
+  if (user && user.length > 0) {
+    const isPasswordValid = await bcrypt.hash(req.body.password, hash);
+
+    if (isPasswordValid) {
+    } else {
+      res.status(401).json({
+        error: "authentication failed",
+      });
+    }
+  } else {
+    res.status(401).json({
+      error: "authentication failed",
     });
   }
 });
