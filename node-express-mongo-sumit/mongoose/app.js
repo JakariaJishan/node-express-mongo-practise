@@ -1,12 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
+const dotenv = require("dotenv");
 const app = express();
 
 const todoRoutes = require("./routes/todoRoutes");
 const userHandler = require("./routes/userHandler");
 
 app.use(express.json());
+dotenv.config();
 
 //database connection
 mongoose

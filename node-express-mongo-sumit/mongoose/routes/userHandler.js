@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const userSchema = require("../schemas/userSchema");
 const User = new mongoose.model("User", userSchema);
@@ -18,7 +19,6 @@ router.post("/signup", async (req, res) => {
       message: "sign up successfull",
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       error: "signup failed",
     });
@@ -26,17 +26,39 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const user = await User.find({ user: req.body.user });
-  if (user && user.length > 0) {
-    const isPasswordValid = await bcrypt.hash(req.body.password, hash);
+  try {
+    const user = await User.find({ user: req.body.user });
+    if (user && user.length > 0) {
+      const isPasswordValid = await bcrypt.hash(req.body.password, user[0].password);
 
-    if (isPasswordValid) {
+      if (isPasswordValid) {
+        //generate jwt token
+        const token = jwt.sign(
+          {
+            username: user[0].username,
+            id: user[0]._id,
+          },
+          process.env.JWT_TOKEN,
+          {
+            expiresIn: "1h",
+          }
+        );
+        res.status(200).json({
+          token,
+          message: "authentication success",
+        });
+      } else {
+        res.status(401).json({
+          error: "authentication failed",
+        });
+      }
     } else {
       res.status(401).json({
         error: "authentication failed",
       });
     }
-  } else {
+  } catch (error) {
+    console.log(error)
     res.status(401).json({
       error: "authentication failed",
     });
