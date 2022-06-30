@@ -1,13 +1,24 @@
-const axios = require("axios");
+const forecast = require("./utils/forecast");
+const geocode = require("./utils/geocode");
 
-const uri = `http://api.positionstack.com/v1/forward?access_key=8b7c556a8b78b99d7820d4281d35a0a3&query=dhaka&limit=1`;
+// console.log(process.argv[2] === undefined)
 
-axios
-  .get(uri)
-  .then((res) => {
-    const users = res.data;
-    console.log(users.data[0].latitude, users.data[0].longitude);
-  })
-  .catch((err) => {
-    console.log("Error: ", err.message);
+if(process.argv[2] !== undefined){
+  geocode(process.argv[2], (err, data) => {
+    if(err){
+      return console.log(err);
+    }
+    forecast(data.longitude, data.latitude, (error, data) => {
+      if(error) {
+        return console.log(error);
+      }
+      // console.log("Error2", error);
+      console.log("Data2", data);
+    });
   });
+}else{
+  console.log('plz provide a  location');
+}
+
+
+
