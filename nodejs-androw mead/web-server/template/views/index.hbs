@@ -4,10 +4,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    {{!-- <script src="/js/script.js"></script> --}}
+
   </head>
   <body>
     {{>header}}
     <p>{{name}}</p>
+    <div>
+      <form action="">
+        <input type="text" placeholder="enter a location">
+          <button type="submit">search</button>
+      </form>
+    </div>
+    <p id="messageOne"></p>
+    <p id="messageTwo"></p>
     {{>footer}}
+
+
+  <script>
+    const locationForm = document.querySelector('form');
+    const messageOne = document.querySelector('#messageOne');
+    const messageTwo = document.querySelector('#messageTwo');
+
+
+    locationForm.addEventListener('submit',(e)=> {
+const userInput = document.querySelector('input').value;
+      e.preventDefault();
+    messageOne.textContent ='🔃loading...';
+    messageTwo.textContent =''
+
+       fetch('http://localhost:3000/weather?location='+userInput)
+    .then(res => res.json())
+    .then(data=> {
+      if(data.error){
+        messageTwo.textContent = ''
+        messageOne.textContent ='😪'+data.error
+      } else{
+        messageOne.textContent = '🥳' + data.forecast
+        messageTwo.textContent = '🌦️'+data.location
+      }
+
+    })
+    })
+    
+   
+  </script>
   </body>
 </html>
