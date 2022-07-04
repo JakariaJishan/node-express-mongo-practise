@@ -13,7 +13,9 @@ app.use(userRoute);
 app.use(taskRoute);
 
 mongoose.connect("mongodb://localhost:27017/task-app", {
+  useUnifiedTopology: true,
   useNewUrlParser: true,
+  autoIndex: true,
 });
 
 app.listen(port, () => {
