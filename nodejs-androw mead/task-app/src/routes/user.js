@@ -26,7 +26,8 @@ router.post("/user/login", async (req, res) => {
       req.body.password
     );
     const token = await user.generateAuthToken();
-    res.send({ user, token });
+    const backedUser = await user.getBackUser();
+    res.send({ user:backedUser, token });
   } catch (error) {
     console.log(error);
     res.status(500).send("not found");
@@ -64,5 +65,12 @@ router.post("/user/logoutAll", auth, async (req, res) => {
     res.send({ error });
   }
 });
-
+router.delete('/user/me', auth, async (req, res) => {
+  try {
+    req.user.remove();
+    res.send(req.user)
+  } catch (error) {
+    res.send({error})
+  }
+})
 module.exports = router;
