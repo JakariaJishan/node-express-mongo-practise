@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import BookList from "../Books/BookList";
 
 const Home = () => {
@@ -10,10 +11,13 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-3 gap-5">
-      {books.map((book) => (
-        <BookList key={book.id} book={book} />
-      ))}
+    <div >
+      <Link to='/add-book' className=' m-4 float-right border-2 border-red-400 p-3'>Add Book➕</Link>
+      <div className="grid grid-cols-3 gap-5">
+        {books.map((book) => (
+          <BookList key={book.id} book={book} />
+        ))}
+      </div>
     </div>
   );
 };

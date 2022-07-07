@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 
 const BookList = (props) => {
-  console.log(props.book);
   const { _id,title, author, updated_date } = props.book;
   return (
     <section className="text-gray-600 body-font">
