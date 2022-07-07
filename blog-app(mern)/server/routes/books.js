@@ -1,6 +1,7 @@
 const express = require("express");
 const book = require("../models/book");
 const router = express.Router();
+const auth = require("../middlewares/auth");
 
 router.get("/", async (req, res) => {
   book
