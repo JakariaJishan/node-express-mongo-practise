@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
-const Register = () => {
+const LogIn = () => {
+    const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -8,14 +10,19 @@ const Register = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    fetch("http://localhost:5000/register", {
+    fetch("http://localhost:5000/register/login", {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        if(!data){
+          return  console.log('error occurs')
+        }
+        navigate('/')
       });
   };
 
@@ -26,21 +33,7 @@ const Register = () => {
           onSubmit={handleSubmit(onSubmit)}
           class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         >
-          <div class="mb-4">
-            <label
-              class="block text-gray-700 text-sm font-bold mb-2"
-              for="username"
-            >
-              Username
-            </label>
-            <input
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="username"
-              type="text"
-              placeholder="Username"
-              {...register("name", { required: true })}
-            />
-          </div>
+          
           <div class="mb-4">
             <label
               class="block text-gray-700 text-sm font-bold mb-2"
@@ -86,4 +79,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default LogIn;

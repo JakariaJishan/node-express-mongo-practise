@@ -26,6 +26,7 @@ router.post("/", async (req, res) => {
     const token = await jwt.sign({ _id: user._id }, "this-is-your-token", {
       expiresIn: "5h",
     });
+
     user.token = token;
     res.status(200).send(user);
   } catch (error) {
@@ -50,9 +51,19 @@ router.post("/login", async (req, res) => {
       expiresIn: "5h",
     });
     user.token = token;
+    res.cookie(`access_token`, token, {
+      // maxAge: 5000,
+      // expires works the same as the maxAge
+      // expires: new Date('01 12 2021'),
+      // secure: true,
+      httpOnly: true,
+      // sameSite: "lax",
+    });
     res.status(200).send(user);
+    // res.redirect('/')
   } catch (error) {
     res.status(500).send("invalid credentials");
+    // console.log(error);
   }
 });
 

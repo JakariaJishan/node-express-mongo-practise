@@ -14,7 +14,7 @@ export default function UpdateBook() {
   const { id } = useParams();
 
   const onSubmit = (data) => {
-    fetch("http://localhost:8080/api/" + id, {
+    fetch("http://localhost:5000/api/" + id, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),

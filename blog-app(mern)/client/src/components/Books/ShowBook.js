@@ -6,13 +6,13 @@ const ShowBook = () => {
   const { id } = useParams();
   const [bookList, setBookList] = useState("");
   useEffect(() => {
-    fetch("http://localhost:8080/api/" + id)
+    fetch("http://localhost:5000/api/" + id)
       .then((res) => res.json())
       .then((data) => setBookList(data));
   }, []);
 
   const handleDelete = () => {
-    fetch("http://localhost:8080/api/" + id, {
+    fetch("http://localhost:5000/api/" + id, {
       method: "DELETE",
     })
       .then((res) => res.json())

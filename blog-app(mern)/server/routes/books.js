@@ -2,8 +2,9 @@ const express = require("express");
 const book = require("../models/book");
 const router = express.Router();
 const auth = require("../middlewares/auth");
+const ensureAuth = require("../middlewares/ensureAuth");
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   book
     .find()
     .then((book) => {
@@ -21,7 +22,7 @@ router.get("/:id", async (req, res) => {
     .catch((err) => res.status(500).send({ err: err.message }));
 });
 
-router.post("/", (req, res) => {
+router.post("/",auth, (req, res) => {
   book
     .create(req.body)
     .then((book) => res.json({ msg: "Book added successfully" }))
