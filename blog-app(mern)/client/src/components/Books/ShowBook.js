@@ -14,6 +14,7 @@ const ShowBook = () => {
   const handleDelete = () => {
     fetch("http://localhost:5000/api/" + id, {
       method: "DELETE",
+      credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {

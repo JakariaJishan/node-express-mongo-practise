@@ -3,8 +3,8 @@ const jwt = require("jsonwebtoken");
 const verifyToken = async (req, res, next) => {
   // const token = req.header("Authorization").replace("Bearer ", "");
   const token = req.cookies.access_token;
-  console.log(token);
-  console.log(req.cookies)
+  // console.log(token);
+  // console.log(req.cookies)
   if (!token) {
     return res.status(500).send("invalid token");
   }
@@ -15,7 +15,7 @@ const verifyToken = async (req, res, next) => {
 
     next();
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).send( 'authentication failed');
   }
 };
 

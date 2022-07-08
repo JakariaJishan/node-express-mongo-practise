@@ -19,6 +19,7 @@ const LogIn = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        sessionStorage.setItem('token', data.token);
         if(!data){
           return  console.log('error occurs')
         }
