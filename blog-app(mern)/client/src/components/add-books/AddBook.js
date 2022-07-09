@@ -22,7 +22,8 @@ export default function AddBook() {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        Authorization: "Bearer " + sessionStorage.getItem("token")
+
       },
       body: JSON.stringify(data),
     })

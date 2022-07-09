@@ -6,7 +6,13 @@ const ShowBook = () => {
   const { id } = useParams();
   const [bookList, setBookList] = useState("");
   useEffect(() => {
-    fetch("http://localhost:5000/api/" + id)
+    fetch("http://localhost:5000/api/" + id, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem("token")
+      }
+    })
       .then((res) => res.json())
       .then((data) => setBookList(data));
   }, []);
@@ -15,6 +21,9 @@ const ShowBook = () => {
     fetch("http://localhost:5000/api/" + id, {
       method: "DELETE",
       credentials: "include",
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem("token")
+      }
     })
       .then((res) => res.json())
       .then((data) => {

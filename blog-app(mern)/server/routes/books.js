@@ -4,9 +4,9 @@ const router = express.Router();
 const auth = require("../middlewares/auth");
 const ensureAuth = require("../middlewares/ensureAuth");
 
-router.get("/", async (req, res) => {
+router.get("/",auth, async (req, res) => {
   book
-    .find()
+    .find({user: req.user._id})
     .then((book) => {
       res.send(book);
     })
@@ -24,7 +24,10 @@ router.get("/:id",auth, async (req, res) => {
 
 router.post("/",auth, (req, res) => {
   book
-    .create(req.body)
+    .create({
+      ...req.body,
+      user: req.user._id
+    })
     .then((book) => res.json({ msg: "Book added successfully" }))
     .catch((err) => console.log(err));
 });

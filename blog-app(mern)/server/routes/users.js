@@ -48,18 +48,19 @@ router.post("/login", async (req, res) => {
     }
 
     const token = await jwt.sign({ _id: user._id }, "this-is-your-token", {
-      expiresIn: "5h",
+      expiresIn: "2h",
     });
     user.token = token;
     req.token = token;
-    res.cookie(`access_token`, token, {
-      // maxAge: 5000,
-      // expires works the same as the maxAge
-      // expires: new Date('01 12 2021'),
-      // secure: true,
-      httpOnly: true,
-      // sameSite: "lax",
-    });
+    req.user = user._id;
+    // res.cookie(`access_token`, token, {
+    //   // maxAge: 5000,
+    //   // expires works the same as the maxAge
+    //   // expires: new Date('01 12 2021'),
+    //   // secure: true,
+    //   httpOnly: true,
+    //   // sameSite: "lax",
+    // });
     res.status(200).send(user);
     // res.redirect('/')
   } catch (error) {

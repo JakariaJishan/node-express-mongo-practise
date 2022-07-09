@@ -76,6 +76,8 @@ const LogIn = ({ setLogAuth }) => {
             </button>
           </div>
         </form>
+
+        
       </div>
     </div>
   );
