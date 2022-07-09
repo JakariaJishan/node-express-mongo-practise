@@ -12,11 +12,13 @@ export default function UpdateBook() {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
-
   const onSubmit = (data) => {
     fetch("http://localhost:5000/api/" + id, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
@@ -26,7 +28,6 @@ export default function UpdateBook() {
         navigate("/");
       });
   };
-
   return (
     <div>
       <Link to="/">Back to book list👉</Link>

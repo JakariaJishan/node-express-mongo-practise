@@ -1,8 +1,11 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 
-const LogIn = () => {
-    const navigate = useNavigate();
+const LogIn = ({ setLogAuth }) => {
+  const navigate = useNavigate();
+  const cookies = new Cookies();
+
   const {
     register,
     handleSubmit,
@@ -18,12 +21,11 @@ const LogIn = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        sessionStorage.setItem('token', data.token);
-        if(!data){
-          return  console.log('error occurs')
+        sessionStorage.setItem("token", data.token)
+        if (!data) {
+          return console.log("error occurs");
         }
-        navigate('/')
+        navigate("/");
       });
   };
 
@@ -34,7 +36,6 @@ const LogIn = () => {
           onSubmit={handleSubmit(onSubmit)}
           class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         >
-          
           <div class="mb-4">
             <label
               class="block text-gray-700 text-sm font-bold mb-2"

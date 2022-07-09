@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 export default function AddBook() {
   const {
@@ -11,12 +12,18 @@ export default function AddBook() {
 
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
+  const cookies = new Cookies();
+  const token = cookies.get("token");
+
 
   const onSubmit = (data) => {
     fetch("http://localhost:5000/api/", {
       method: "POST",
-      credentials:"include",
-      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
@@ -29,7 +36,7 @@ export default function AddBook() {
 
   return (
     <div>
-        <Link to='/' >Back to book list👉</Link>
+      <Link to="/">Back to book list👉</Link>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col w-1/2 mx-auto m-4  p-5"

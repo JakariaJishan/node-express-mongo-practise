@@ -51,6 +51,7 @@ router.post("/login", async (req, res) => {
       expiresIn: "5h",
     });
     user.token = token;
+    req.token = token;
     res.cookie(`access_token`, token, {
       // maxAge: 5000,
       // expires works the same as the maxAge
