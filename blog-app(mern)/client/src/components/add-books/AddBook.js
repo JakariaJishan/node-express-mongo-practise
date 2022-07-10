@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 
 export default function AddBook() {
+  const [img, setImg] = useState()
   const {
     register,
     formState: { errors },
@@ -17,11 +18,20 @@ export default function AddBook() {
 
 
   const onSubmit = (data) => {
+
+    // let formData = new FormData();
+    // formData.append('file', img.data)
+    // console.log(formData.get('file'));
+    // const finalData = {
+    //   ...data,
+    //   formData
+    // }
+
     fetch("http://localhost:5000/api/", {
       method: "POST",
       credentials: "include",
       headers: {
-        "Content-Type": "application/json",
+        'content-type': 'application/json',
         Authorization: "Bearer " + sessionStorage.getItem("token")
 
       },
@@ -34,6 +44,15 @@ export default function AddBook() {
         navigate("/");
       });
   };
+
+  const handleFileChange = (e) => {
+    const img = {
+      preview: URL.createObjectURL(e.target.files[0]),
+      data: e.target.files[0],
+    }
+    console.log(img);
+    setImg(img)
+  }
 
   return (
     <div>
@@ -82,6 +101,14 @@ export default function AddBook() {
         <p className="text-red-600 mb-3">
           {errors.publisher?.type === "required" && "First name is required"}
         </p>
+        {/* <input
+          {...register("file", { required: true })}
+          type='file'
+          onChange = {handleFileChange}
+          name='file'
+          className="w-full  bg-gray-300 p-3 rounded"
+        /> */}
+        
         <input
           type="submit"
           className="w-full  bg-gray-500 cursor-pointer p-3 rounded"
