@@ -1,17 +1,21 @@
 import { Link } from "react-router-dom";
 
 const BookList = (props) => {
-  const { _id,title, author, updated_date } = props.book;
+  const { _id, title, author, updated_date, book_pic } = props.book;
+  const arrayBuffer = book_pic?.data?.data;
+  const base64String = btoa(
+    String.fromCharCode(...new Uint8Array(arrayBuffer))
+  );
+
   return (
     <section className="text-gray-600 body-font">
-      
       <div className="container px-5 py-24 mx-auto">
         <div className="-m-4 ">
           <div className=" p-4 ">
             <div className="bg-gray-100 p-6 rounded-lg">
               <img
                 className="h-80 rounded w-full object-cover object-center mb-6"
-                src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+                src={`data:image/png;base64,${base64String}`}
                 alt="content"
               />
               <Link to={`show-book/${_id}`}>
