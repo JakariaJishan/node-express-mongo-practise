@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 const BookList = (props) => {
   const { _id, title, author, updated_date, book_pic } = props.book;
   const arrayBuffer = book_pic?.data?.data;
-  const base64String = btoa(
-    String.fromCharCode(...new Uint8Array(arrayBuffer))
-  );
+  const base64String = btoa(new Uint8Array(arrayBuffer).reduce(function (data, byte) {
+    return data + String.fromCharCode(byte);
+}, ''));
 
   return (
     <section className="text-gray-600 body-font">

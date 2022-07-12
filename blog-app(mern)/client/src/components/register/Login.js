@@ -21,10 +21,11 @@ const LogIn = ({ setLogAuth }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        sessionStorage.setItem("token", data.token)
         if (!data) {
-          return console.log("error occurs");
+          return alert("no user found");
         }
+     
+        sessionStorage.setItem("token", data.token)
         navigate("/");
       });
   };

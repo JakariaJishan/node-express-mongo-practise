@@ -2,12 +2,12 @@ const express = require("express");
 const book = require("../models/book");
 const router = express.Router();
 const auth = require("../middlewares/auth");
-const ensureAuth = require("../middlewares/ensureAuth");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const isAdmin = require("../middlewares/admin");
 
-router.get("/", auth, async (req, res) => {
+router.get("/",auth, async (req, res) => {
   book
     .find({ user: req.user._id })
     .then((book) => {

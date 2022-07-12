@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
       password: hashedPassword,
     });
 
-    const token = await jwt.sign({ _id: user._id }, "this-is-your-token", {
+    const token = await jwt.sign({ _id: user._id, email }, "this-is-your-token", {
       expiresIn: "5h",
     });
 
@@ -38,7 +38,7 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!(email && password)) {
-      return res.status(500).send("all field are required");
+      return res.status(500).json({ message: "all field are required"});
     }
 
     const user = await User.findOne({ email });
@@ -50,6 +50,9 @@ router.post("/login", async (req, res) => {
     const token = await jwt.sign({ _id: user._id }, "this-is-your-token", {
       expiresIn: "2h",
     });
+    if(token==='undefined') {
+      return res.status(500).json({ message: "invalid token"})
+    }
     user.token = token;
     req.token = token;
     req.user = user._id;
@@ -64,7 +67,7 @@ router.post("/login", async (req, res) => {
     res.status(200).send(user);
     // res.redirect('/')
   } catch (error) {
-    res.status(500).send("invalid credentials");
+    res.status(500).send({message:"invalid credentials"});
     // console.log(error);
   }
 });
